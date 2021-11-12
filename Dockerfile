@@ -14,10 +14,13 @@ RUN apt-get update \
  && apt-get install bubblewrap -y
 
 COPY --from=builder /usr/local/cargo/bin/sccache-dist /usr/local/bin/sccache-dist
+ADD entrypoint.sh /
+ADD scheduler.conf /
+ADD server.conf /
 
 STOPSIGNAL SIGINT
 
 ENV SCCACHE_NO_DAEMON=1
 ENV RUST_LOG=trace
 
-ENTRYPOINT ["/usr/local/bin/sccache-dist"]
+ENTRYPOINT ["/entrypoint.sh"]
